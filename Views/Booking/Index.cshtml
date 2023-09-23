@@ -1,0 +1,134 @@
+﻿@model innRoadAssignment_Dynamic.ViewModel.BookingViewModel
+@{
+    ViewBag.Title = "Index";
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.13.1.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnSave').click(function () {
+            if (!$('#formBooking').valid()) {
+                return;
+            }
+            SaveBookingData();
+        });
+        $('#divAddBooking').on('hidden.bs.modal', function () {
+            ResetForm();
+        });
+    });
+    function SaveBookingData() {
+        var formData = new FormData;
+        formData.append("CustomerName", $('#txtCustomerName').val());
+        formData.append("CustomerAddress", $('#txtCustomerAddress').val());
+        formData.append("CustomerPhone", $('#txtCustomerPhone').val());
+        formData.append("BookingFrom", $('#txtBookingFrom').val());
+        formData.append("BookingTo", $('#txtBookingTo').val());
+        formData.append("AssignedRoomId", $('#ddAssignedRoomId').val());
+        formData.append("TotalMember", $('#txtTotalMember').val());
+        formData.append("BookingId", $('#txtBookingId').val());
+        $.ajax({
+            async: true,
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (data) {
+                if (data.success) {
+                    alert(data.message);
+                    ResetForm();
+                }
+            },
+            error: function () {
+                alert('Something went wrong while saving');
+            }
+        });
+    }
+    function ResetForm() {
+        $('#txtCustomerName').val('');
+        $('#txtCustomerAddress').val('');
+        $('#txtCustomerPhone').val('');
+        $('#txtBookingFrom').val('');
+        $('#txtBookingTo').val('');
+        $('#ddAssignedRoomId').val(1);
+        $('#txtTotalMember').val('');
+        $('#btnSave').text('Save');
+        $('#BookingId').val(0);
+    }
+</script>
+<div style="margin-top : 50px">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#divAddBooking" data-backdrop="static" data-keyboard="false"> New Booking</button>
+</div>
+
+
+<div id="divAddBooking" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"> New Booking </h4>
+            </div>
+            <div class="modal-body">
+                <form id="formBooking">
+                    <div class="container" style="width:570px">
+                        @Html.HiddenFor(model => model.BookingId, new { id = "txtBookingId" })
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.CustomerName, new { @class = "control-label" })
+                                @Html.TextBoxFor(model => model.CustomerName, new { @class = "form-control", id = "txtCustomerName" })
+                                @Html.ValidationMessageFor(model => model.CustomerName, null, new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.CustomerAddress, new { @class = "control-label" })
+                                @Html.TextBoxFor(model => model.CustomerAddress, new { @class = "form-control", id = "txtCustomerAddress" })
+                                @Html.ValidationMessageFor(model => model.CustomerAddress, null, new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.CustomerPhone, new { @class = "control-label" })
+                                @Html.TextBoxFor(model => model.CustomerPhone, new { @class = "form-control", id = "txtCustomerPhone" })
+                                @Html.ValidationMessageFor(model => model.CustomerPhone, null, new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.BookingFrom, new { @class = "control-label" })
+                                @Html.TextBoxFor(model => model.BookingFrom, new { @class = "form-control", id = "txtBookingFrom" })
+                                @Html.ValidationMessageFor(model => model.BookingFrom, null, new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.BookingTo, new { @class = "control-label" })
+                                @Html.TextBoxFor(model => model.BookingTo, new { @class = "form-control", id = "txtBookingTo" })
+                                @Html.ValidationMessageFor(model => model.BookingTo, null, new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.AssignedRoomId, new { @class = "control-label" })
+                                @Html.DropDownListFor(model => model.AssignedRoomId, Model.ListOfRooms, new { @class = "form-control", id = "ddAssignedRoomId" })
+                                @Html.ValidationMessageFor(model => model.AssignedRoomId, null, new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.TotalMember, new { @class = "control-label" })
+                                @Html.TextBoxFor(model => model.TotalMember, new { @class = "form-control", id = "txtTotalMember" })
+                                @Html.ValidationMessageFor(model => model.TotalMember, null, new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-6">
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="btnSave" type="button" class="btn btn-success">Save</button> &nbsp;
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="margin-top:20px"></div>
+<div id="divRoomList">
+
+</div>

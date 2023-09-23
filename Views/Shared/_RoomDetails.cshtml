@@ -1,0 +1,65 @@
+﻿@model IEnumerable<innRoadAssignment_Dynamic.ViewModel.RoomDetailsViewModel>
+
+
+<table style="width:100%" class="table table-responsive table-striped">
+    <thead class="thead-light">
+        <tr>
+            <th>
+                Image
+            </th>
+            <th>
+                Room Number
+            </th>
+            <th>
+                Room Price
+            </th>
+            <th>
+                Booking Status
+            </th>
+            <th>
+                Room Type
+            </th>
+            <th>
+                Room Capacity
+            </th>
+            <th>
+                Room Description
+            </th>
+            <th>
+                Action
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <img src="@Url.Content(item.RoomImage)" style="width:50px" class="img-responsive" alt="Image" />
+                </td>
+                <td>
+                    @item.RoomNumber
+                </td>
+                <td>
+                    @item.RoomPrice
+                </td>
+                <td>
+                    @item.BookingStatus
+                </td>
+                <td>
+                    @item.RoomType
+                </td>
+                <td>
+                    @item.RoomCapacity
+                </td>
+                <td>
+                    @item.RoomDescription
+                </td>
+                <td>
+                    <a href="#"><span id="btnEdit" class="glyphicon glyphicon-pencil" onclick="EditRoom(@item.RoomId)"></span></a> &nbsp;&nbsp;|&nbsp;&nbsp;
+                    <a href="#"><span id="btnDelete" class="glyphicon glyphicon-trash" onclick="DeleteRoom(@item.RoomId)"></span></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
